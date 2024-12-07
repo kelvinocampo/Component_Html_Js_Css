@@ -1,6 +1,6 @@
 # WebComponents Kelvinocampo
 
-Este repositorio contiene diversos componentes web desarrollados manualmente por **[kevin-link](https://github.com/kelvinocampo)** en su perfil.
+Este repositorio contiene diversos componentes web desarrollados manualmente por **[kelvinocampo](https://github.com/kelvinocampo)** en su perfil.
 
 ## Índice
 
@@ -29,4 +29,4 @@ Este componente permite alternar entre los modos claro y oscuro en la interfaz d
 
 ## Copyright
 
-Desarrollado por **[kevin-link](https://github.com/kelvinocampo)**.
+Desarrollado por **[kelvinocampo](https://github.com/kelvinocampo)**.
