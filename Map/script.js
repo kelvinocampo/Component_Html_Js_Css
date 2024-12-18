@@ -1,31 +1,46 @@
 if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
         (position) => {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            const waypointNames = ["You are here", "SENA"]
+            const { latitude, longitude } = position.coords;
+            const waypoints = [
+                {
+                    name: "I am here.",
+                    coords: L.latLng(latitude, longitude),
+                },
+                {
+                    name: "Sena.",
+                    coords: L.latLng(4.541234597659739, -75.66826069320598),
+                }
+            ];
+
+            // Customizar los iconos
+            const customIcon = L.icon({
+                iconUrl: 'assets/myLocation.png', // Asegúrate de que el icono esté en el directorio correcto
+                iconSize: [25, 25], // Ajusta el tamaño del icono
+                iconAnchor: [12, 25], // Posiciona el ancla del icono (ajustado para una imagen 25x25)
+            });
 
             // Crear el mapa
-            let map = L.map('map').setView([latitude, longitude], 13);
+            const map = L.map('map').setView([latitude, longitude], 13);
 
             // Añadir la capa de mapa
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-            // Añadir un marcador en la posición obtenida hasta el sena
-            L.Routing.control({
-                waypoints: [
-                    L.latLng(latitude, longitude),
-                    L.latLng(4.541234597659739, -75.66826069320598)
-                ],
+            // Crear el control de la ruta con los waypoints
+            const control = L.Routing.control({
+                waypoints: waypoints.map(waypoint => waypoint.coords),
                 router: L.Routing.osrmv1({
                     serviceUrl: 'https://router.project-osrm.org/route/v1'
                 }),
                 createMarker: function (i, waypoint, n) {
-                    return L.marker(waypoint.latLng).bindPopup(waypointNames[i]);
+                    // Crear marcador con el ícono personalizado
+                    return L.marker(waypoint.latLng, { icon: customIcon })
+                        .bindPopup(waypoints[i].name); // Añadir popup con el nombre del waypoint
                 },
-                show: false, // El meno flotante se encuentra oculto default
-                addWaypoints: false, // No se puede editar la ruta
+                show: false, // El menú flotante está oculto por defecto
+                addWaypoints: false, // No permite editar la ruta
             }).addTo(map);
+
         },
         (error) => {
             Swal.fire({
